@@ -1,9 +1,8 @@
 import torch
 import tensorflow as tf
 import onnx
-import logging
-
 from enum import Enum
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -14,11 +13,12 @@ class ModelTypes(Enum):
 
 
 class Framework:
-    def __init__(self, model):
+    def __init__(self, model, input_shape):
         self.model = model
         self.packaged_model = None
         self.model_type = None
-        self.input_size = None
+        self.input_shape = input_shape
+        self.onnx_model = None
         self.onnx_path = None
         self.dtype = None
         self._check_model_info(self.model)
@@ -26,17 +26,15 @@ class Framework:
     def _check_model_info(self, model):
         if isinstance(model, torch.nn.Module):
             self.model_type = ModelTypes.TORCH
-            self.input_size = next(model.parameters()).shape[1:]
             self.dtype = next(model.parameters()).dtype
         elif isinstance(model, tf.keras.Model):
             self.model_type = ModelTypes.TENSORFLOW
-            self.input_size = model.input_shape[1:]
             self.dtype = model.weights[0].dtype
         else:
             logger.error(f"Mode type: {type(model)} not supported.")
             raise Exception(f"Mode type: {type(model)} not supported.")
 
-    def _check_onnx_model(self):
+    def check_onnx_model(self):
         if self.onnx_path:
             model = onnx.load(self.onnx_path)
             onnx.checker.check_model(model)
@@ -47,13 +45,12 @@ class Framework:
         if self.model_type == ModelTypes.TORCH:
             # TODO: Check onnx2torch
             torch.onnx.export(self.model,
-                              torch.randn(1, *self.input_size, dtype=self.dtype),
+                              torch.randn(1, *self.input_shape, dtype=self.dtype),
                               onnx_path,
                               export_params=True)
-        elif self.model == ModelTypes.TENSORFLOW:
+        elif self.model_type == ModelTypes.TENSORFLOW:
             import tf2onnx
-            input_signature = (tf.TensorSpec((None, *self.input_size), self.dtype, name="input"),)
-            onnx_model, _ = tf2onnx.convert.from_keras(self.model, input_signature)
-            onnx.save(onnx_model, onnx_path)
+            input_signature = (tf.TensorSpec((1, *self.input_shape), self.dtype, name="input"),)
+            tf2onnx.convert.from_keras(self.model, input_signature, output_path=onnx_path)
         self.onnx_path = onnx_path
         return onnx_path
