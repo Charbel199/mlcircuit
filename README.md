@@ -1,8 +1,24 @@
-# ML Circuit
+<div align="center">
+
+## ML Circuit
+
+<h3>
+
+
+
+</h3>
+
+[![Unit Tests](https://github.com/Charbel199/mlcircuit/actions/workflows/test.yml/badge.svg)](https://github.com/Charbel199/mlcircuit/blob/main/.github/workflows/test.yml)
+
+</div>
+
+
 
 This project aims to provide a seamless integration of Kafka, ONNX, TensorRT, and PyTorch for end-to-end machine learning training, evaluation, and deployment. By leveraging these technologies, we can build a robust and efficient pipeline for developing and deploying machine learning models.
 
 In reality, the true purpose of this project is to get better at these technologies while working on something fun.
+
+![example workflow]()
 
 ## Features
 
