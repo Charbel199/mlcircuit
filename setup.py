@@ -19,7 +19,7 @@ setup(name='mlcircuit',
           "Programming Language :: Python :: 3",
           "License :: MIT License"
       ],
-      install_requires=['numpy', 'requests', 'pillow', 'tqdm', 'networkx', 'pyopencl', 'PyYAML'],
+      install_requires=['numpy', 'requests', 'tqdm', 'networkx'],
       python_requires='>=3.8',
       extras_require={
           'testing': [

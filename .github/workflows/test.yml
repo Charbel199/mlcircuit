@@ -18,6 +18,6 @@ jobs:
         with:
           python-version: 3.8
       - name: Install Dependencies
-        run: pip install -e '.[testing]'
+        run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
       - name: Run Pytest
         run: python -m pytest -s -v -n=auto test/
