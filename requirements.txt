@@ -2,3 +2,4 @@ torch
 tensorflow
 onnx
 tf2onnx
+onnxruntime-gpu

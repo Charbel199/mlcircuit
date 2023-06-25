@@ -27,7 +27,9 @@ setup(name='mlcircuit',
               "tensorflow",
               "pytest",
               "pytest-xdist",
-              "onnx"
+              "onnx",
+              "tf2onnx",
+              "onnxruntime-gpu"
           ],
       },
       include_package_data=True)
