@@ -18,7 +18,6 @@ This project aims to provide a seamless integration of Kafka, ONNX, TensorRT, an
 
 In reality, the true purpose of this project is to get better at these technologies while working on something fun.
 
-![example workflow]()
 
 ## Features
 
@@ -29,6 +28,14 @@ In reality, the true purpose of this project is to get better at these technolog
 - **TensorRT Integration**: TensorRT is a high-performance deep learning inference optimizer and runtime library. It optimizes and deploys trained models onto GPUs, providing accelerated inferencing capabilities for our machine learning models.
 
 - **PyTorch Integration**: PyTorch, a popular deep learning framework, is used for model training, evaluation, and deployment. It provides a flexible and intuitive interface for building and training neural networks.
+
+
+### Kafka
+
+```
+cd mlcircuit/streaming/docker
+docker-compose up
+```
 
 
 ## License
