@@ -14,7 +14,7 @@ setup(name='mlcircuit',
       license='MIT',
       long_description=long_description,
       long_description_content_type='text/markdown',
-      packages=['mlcircuit', 'mlcircuit.framework','mlcircuit.runtime'],
+      packages=['mlcircuit', 'mlcircuit.framework','mlcircuit.runtime',,'mlcircuit.model'],
       classifiers=[
           "Programming Language :: Python :: 3",
           "License :: MIT License"
