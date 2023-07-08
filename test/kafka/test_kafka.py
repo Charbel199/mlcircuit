@@ -3,8 +3,12 @@ import numpy as np
 import unittest
 from confluent_kafka import Producer, Consumer
 import time
+import os
+
+IN_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
 
 
+@unittest.skipIf(IN_GITHUB_ACTIONS, 'Do not run on github actions.')
 class TestKafka(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(TestKafka, self).__init__(*args, **kwargs)

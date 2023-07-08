@@ -4,3 +4,4 @@ tensorflow==2.8.0
 onnx==1.13.1
 tf2onnx==1.14.0
 onnxruntime-gpu==1.9.0
+confluent-kafka==2.1.1
