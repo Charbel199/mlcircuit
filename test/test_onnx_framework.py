@@ -1,7 +1,7 @@
 import pytest
 import torch
 import tensorflow as tf
-from mlcircuit.framework.onnx_framework import Framework, ModelTypes
+from mlcircuit.framework.onnx_framework import to_onnx
 
 import torch.nn as nn
 
@@ -56,67 +56,41 @@ def tensorflow_model():
     return model
 
 
-def test_model_info_torch(torch_model):
-    # Test checking model info for a PyTorch model
-    input_shape = (10,)
-    framework = Framework(torch_model, input_shape)
-    assert framework.model_type == ModelTypes.TORCH
-    assert framework.input_shape == (10,)
-    assert framework.dtype == torch.float32
-
-
-def test_cnn_model_info_torch(torch_cnn_model):
-    # Test checking model info for a PyTorch model
-    input_shape = (3, 200, 200)
-    assert torch_cnn_model(torch.randn(1, *input_shape)) is not None
-    framework = Framework(torch_cnn_model, input_shape)
-    assert framework.model_type == ModelTypes.TORCH
-    assert framework.input_shape == (3, 200, 200)
-    assert framework.dtype == torch.float32
-
-
-def test_model_info_tensorflow(tensorflow_model):
-    # Test checking model info for a TensorFlow model
-    input_shape = (10,)
-    framework = Framework(tensorflow_model, input_shape)
-    assert framework.model_type == ModelTypes.TENSORFLOW
-    assert framework.input_shape == (10,)
-    assert framework.dtype == tf.float32
-
-
-def test_model_info_invalid():
-    # Test checking model info for an unsupported model type
-    model = "Invalid model type"
-    input_shape = (10,)
-    with pytest.raises(Exception):
-        Framework(model, input_shape)
-
 
 def test_to_onnx_torch(torch_model):
     # Test converting a PyTorch model to ONNX
-    input_shape = (10,)
-    framework = Framework(torch_model, input_shape)
+    input_shape = (1, 10)
     onnx_path = "test/data/torch_model.onnx"
-    result = framework.to_onnx(onnx_path)
+    result = to_onnx(model_type = 'torch',
+                    input_shape = input_shape,
+                    dtype = torch.float32,
+                    onnx_path = onnx_path,
+                    model = torch_model)
     assert result == onnx_path
-    framework.check_onnx_model()
 
 
 def test_to_onnx_torch_cnn(torch_cnn_model):
     # Test converting a PyTorch model to ONNX
-    input_shape = (3, 200, 200)
-    framework = Framework(torch_cnn_model, input_shape)
+    input_shape = (1, 3, 200, 200)
     onnx_path = "test/data/torch_model_cnn.onnx"
-    result = framework.to_onnx(onnx_path)
+    result = to_onnx(model_type = 'torch',
+                    input_shape = input_shape,
+                    dtype = torch.float32,
+                    onnx_path = onnx_path,
+                    model = torch_cnn_model)
     assert result == onnx_path
-    framework.check_onnx_model()
+
 
 
 def test_to_onnx_tensorflow(tensorflow_model):
     # Test converting a TensorFlow model to ONNX
-    input_shape = (10,)
-    framework = Framework(tensorflow_model, input_shape)
+    input_shape = (1, 10)
     onnx_path = "test/data/tensorflow_model.onnx"
-    result = framework.to_onnx(onnx_path)
+
+    result = to_onnx(model_type = 'tf',
+                      input_shape = input_shape,
+                      dtype = tf.float32,
+                      onnx_path = onnx_path,
+                      model = tensorflow_model)
+    
     assert result == onnx_path
-    framework.check_onnx_model()
